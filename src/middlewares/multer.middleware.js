@@ -7,6 +7,7 @@ const storage = multer.diskStorage({
     cb(null, TEMP_FILE_PATH);
   },
   filename: function (req, file, cb) {
+    // rename the file
     /*   const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9); */
     cb(null, file.originalname);
   },

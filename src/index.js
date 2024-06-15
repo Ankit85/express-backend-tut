@@ -13,7 +13,7 @@ connectDB()
     });
 
     app.listen(PORT, () => {
-      console.log("Server is listening to PORT:", PORT);
+      console.log("🌐 Server is listening to PORT:", PORT);
     });
   })
   .catch((error) => console.log("MONGODB connection failed:", error));

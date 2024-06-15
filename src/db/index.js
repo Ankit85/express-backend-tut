@@ -4,7 +4,7 @@ import { DB_NAME } from "../constant.js";
 const connectDB = async () => {
   try {
     if (process.env.MONGODB_URI === undefined) {
-      throw new Error("MONGODB_URI variable not declared or is undefined");
+      throw new Error("🛢 MONGODB_URI variable not declared or is undefined");
     }
 
     const connectionInstance = await mongoose.connect(
@@ -12,7 +12,7 @@ const connectDB = async () => {
     );
 
     console.log(
-      "MONGODB connected successfully!!! DB Host URI:",
+      "🛢 MONGODB connected successfully!!! DB Host URI:",
       connectionInstance.connection.host
     );
   } catch (error) {
