@@ -8,13 +8,14 @@ const verifyJWT = async (req, _, next) => {
       req.cookies?.accessToken ||
       req.headers("Authorization")?.replace("Bearer ", "");
 
+  
     if (!token) {
       throw new ApiError(401, "Unauthorized access");
     }
 
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
 
-    console.log("decodedTOken", decodedToken);
+    console.log("decodedToken", decodedToken);
 
     const user = await User.findById(decodedToken._id);
 

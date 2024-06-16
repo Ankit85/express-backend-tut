@@ -39,8 +39,6 @@ const registerUser = asyncHandler(async (req, res) => {
 
   const avatar = req.files?.avatar[0]?.path;
   const coverImage = req.files?.coverImage[0]?.path;
-  console.log("AVATAR LOCAL URL", avatar);
-  console.log("coverImage LOCAL URL", coverImage);
 
   if (!avatar) {
     throw new ApiError(400, "Avatar file is required");
@@ -179,4 +177,40 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
   }
 });
 
-export { registerUser, loginUser, logoutUser, refreshAccessToken };
+const changePassword = asyncHandler(async (req, res) => {
+  const { oldPassword, newPassword } = req.body;
+  const user = await User.findById(req.user._id);
+
+  const isPasswordCorrect = await user.validatePassword(oldPassword);
+
+  if (!isPasswordCorrect) {
+    throw new ApiError(400, "Invalid old password");
+  }
+
+  if (oldPassword === newPassword) {
+    throw new ApiError(400, "New password is same as old password");
+  }
+
+  user.password = newPassword;
+  await user.save({ validateBeforeSave: false });
+
+  return res
+    .status(200)
+    .json(new ApiResponse(200, {}, "Password changed successfully"));
+});
+
+const currentUser = asyncHandler(async (req, res) => {
+  const user = await User.findById(req.user._id).select("-password");
+  return res
+    .status(200)
+    .json(new ApiResponse(200, user, "User found successfully"));
+});
+
+export {
+  registerUser,
+  loginUser,
+  logoutUser,
+  refreshAccessToken,
+  changePassword,
+  currentUser,
+};
